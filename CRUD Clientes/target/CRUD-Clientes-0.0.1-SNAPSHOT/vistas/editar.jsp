@@ -10,22 +10,18 @@
 <body>
     <h1>Actualizar Cliente</h1>
 	<form action="adminCliente?action=editar" method="post" >
-		<table>	
-			<tr>
-				<td><label>Id</label></td>
-				<td><input type="text" name="id" value="<c:out value="${cliente.id}"></c:out>"></td>
-			</tr>		
+		<table border="1" align="center">			
 			<tr>
 				<td><label>Cédula</label></td>
-				<td><input type="text" name="cedula" value="<c:out value="${cliente.cedula}"></c:out>"></td>
+				<td><input type="text" name="cedula" value="${cliente.cedula}"></td>
 			</tr>
 			<tr>
 				<td><label>Nombre</label></td>
-				<td><input type="text" name="nombre" value="<c:out value="${cliente.nombre}"></c:out>" ></td>
+				<td><input type="text" name="nombre" value="${cliente.nombre}" ></td>
 			</tr>
 			<tr>
 				<td><label>Apellido</label></td>
-				<td><input type="text" name="apellido" value="<c:out value="${cliente.apellido}"></c:out>" ></td>
+				<td><input type="text" name="apellido" value="${cliente.apellido}" ></td>
 			</tr>
 		</table>
 	

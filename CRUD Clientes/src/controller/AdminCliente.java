@@ -111,17 +111,18 @@ public class AdminCliente extends HttpServlet {
 	}	
 	
 	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		Cliente cliente = clienteDAO.obtenerPorId(3);
-		request.setAttribute("cliente", cliente);
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/editar.jsp");
+		Cliente cliente = clienteDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
+		request.setAttribute("cliente", cliente);		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/editar.jsp");
 		dispatcher.forward(request, response);
 	}
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
 		Cliente cliente = new Cliente(Integer.parseInt(request.getParameter("id")), request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"));
 		clienteDAO.actualizar(cliente);
-		index(request, response);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		dispatcher.forward(request, response);
+
 	}
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
