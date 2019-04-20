@@ -16,15 +16,15 @@ public class ClienteDAO {
 	private Connection connection;
  
 	public ClienteDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) throws SQLException {
-		System.out.println(jdbcURL);
 		con = new Conexion(jdbcURL, jdbcUsername, jdbcPassword);
 	}
  
-	public boolean insertar(Cliente cliente) throws SQLException {
+	public boolean insertar(Cliente cliente) throws SQLException {		
 		boolean registrar = false;
 		String sql = "INSERT INTO cliente values (NULL,'"+cliente.getCedula()+"','"+cliente.getNombre()+"','"+cliente.getApellido()+"')";
 		try {
-			connection = con.conectar();	
+			con.conectar();
+			connection = con.getJdbcConnection();
 			Statement stm= connection.createStatement();
 			stm.execute(sql);
 			registrar=true;

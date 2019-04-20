@@ -18,24 +18,16 @@ public class Conexion {
 		this.jdbcPassword = jdbcPassword;
 	}
  
-	public Connection conectar() {
-		Connection con = null;
-		
-		String password = "";
-		String usuario = "root";
-		String url = "jdbc:mysql://localhost:3306/ventas?user=" + usuario
-				 + "&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-		
-		try {
-			con = DriverManager.getConnection(url);
-			if (con != null) {
-				System.out.println("Conectado");
-			}
-		} catch (SQLException e) {
-			System.out.println("No se pudo conectar a la base de datos");
-			e.printStackTrace();
-		}
-		return con;        
+	public void conectar() throws SQLException {
+        if (jdbcConnection == null || jdbcConnection.isClosed()) {
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException(e);
+            }
+            jdbcConnection = DriverManager.getConnection(
+                                        jdbcURL, jdbcUsername, jdbcPassword);
+        }
     }
      
     public void desconectar() throws SQLException {

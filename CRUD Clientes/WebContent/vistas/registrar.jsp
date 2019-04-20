@@ -12,7 +12,7 @@
 		<table border="1" align="center">
 		<tr>
 			<td><a>Cedula:</a></td>		
-			<td><input type="text" name="codigo"/></td>	
+			<td><input type="text" name="cedula"/></td>	
 		</tr>
 		<tr>
 			<td><a>Nombre:</a></td>		
@@ -20,7 +20,7 @@
 		</tr>
 		<tr>
 			<td><a>Apellido:</a></td>		
-			<td><input type="text" name="descripcion"/></td>	
+			<td><input type="text" name="apellido"/></td>	
 		</tr>		
 		
 		</table>

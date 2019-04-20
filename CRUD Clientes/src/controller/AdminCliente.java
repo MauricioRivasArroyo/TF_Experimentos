@@ -20,7 +20,7 @@ public class AdminCliente extends HttpServlet {
 	ClienteDAO clienteDAO;
  
 	public void init() {
-		String jdbcURL = getServletContext().getInitParameter("jdbcURL");
+		String jdbcURL = "jdbc:mysql://localhost:3306/ventas?user=root&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
 		String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 		try {
@@ -90,7 +90,7 @@ public class AdminCliente extends HttpServlet {
 	}
  
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		Cliente cliente = new Cliente(3, request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"));
+		Cliente cliente = new Cliente(0,request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"));
 		clienteDAO.insertar(cliente);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
@@ -111,7 +111,7 @@ public class AdminCliente extends HttpServlet {
 	}	
 	
 	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		Cliente cliente = clienteDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
+		Cliente cliente = clienteDAO.obtenerPorId(3);
 		request.setAttribute("cliente", cliente);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/vista/editar.jsp");
