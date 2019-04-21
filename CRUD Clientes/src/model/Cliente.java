@@ -1,8 +1,7 @@
 package model;
 
 public class Cliente {
-	private int id;
-	
+	private int id;	
 	private String cedula;
 	private String nombre;
 	private String apellido;
@@ -47,10 +46,6 @@ public class Cliente {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
-	}
+	}	
 	
-	@Override
-	public String toString() {
-		return this.id+", "+this.cedula+", "+this.nombre+", "+this.apellido;
-	}
 }
