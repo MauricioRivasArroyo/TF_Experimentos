@@ -4,20 +4,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Registrar Producto</title>
 </head>
 <body>
-	<h1>Registrar Producto</h1>
+	<h2>Registrar Producto</h2>
 	<form action="adminProducto?action=register" method="post">
-		<table border="1" align="center">		
+		<table align="center" class="table">		
 		<tr>
-			<td><a>Nombre:</a></td>		
+			<th scope="row"><a>Nombre:</a></th>		
 			<td><input type="text" name="nombre"/></td>	
 		</tr>
 		<tr>
-			<td><a>Categoria:</a></td>		
-			<td><select  name="categoria">
+			<th scope="row"><a>Categoria:</a></th>		
+			<td><select class="selectpicker" name="categoria">
 			<c:forEach var="cat" items="${lista}">
 			<option value="<c:out value="${cat.id}"></c:out>"><c:out value="${cat.nombre}"></c:out></option>
 			</c:forEach>
