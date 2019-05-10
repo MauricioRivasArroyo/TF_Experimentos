@@ -18,6 +18,42 @@ public class ClienteDAO {
 	public ClienteDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) throws SQLException {
 		con = new Conexion(jdbcURL, jdbcUsername, jdbcPassword);
 	}
+	public boolean ValidacionNumeros(String cad) {
+		int num;
+		try {
+			num = Integer.parseInt(cad);
+			return true;
+		}catch(Exception e) {
+			return false;
+		}	
+	}
+	public boolean ValidacionAlfanumerico(String cad) {
+		boolean num = false;
+		boolean str = false;
+		boolean ex = false;
+		for(int i = 0;i<cad.length();i++) {
+			if(Character.isDigit(cad.charAt(i)) == true) {
+				num = true;
+			}else if (Character.isLetter(cad.charAt(i)) == true){
+				str = true;
+			}else { 
+				ex = true;
+			}
+			
+		}		
+		if (num == true && str == true && ex == false) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	public boolean ValidacionLimite(String cad, int min, int max){
+		if(cad.length()-1 > min && cad.length()-1 < max ) {
+			return true;
+		}else {
+			return false;
+		}
+	}
  
 	public boolean insertar(Cliente cliente) throws SQLException {		
 		boolean registrar = false;

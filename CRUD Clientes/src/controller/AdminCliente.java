@@ -10,7 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+
+
 import dao.ClienteDAO;
 import model.Cliente;
 
@@ -90,11 +91,18 @@ public class AdminCliente extends HttpServlet {
 	}
  
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		Cliente cliente = new Cliente(0,request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"));
-		clienteDAO.insertar(cliente);
+		if(clienteDAO.ValidacionNumeros(request.getParameter("cedula"))== true) {
+			Cliente cliente = new Cliente(0,request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"));
+			clienteDAO.insertar(cliente);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+			dispatcher.forward(request, response);
+		}
+		else {
+			System.out.println("la cedula solo numeros");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/registrar.jsp");
+			dispatcher.forward(request, response);
+		}
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-		dispatcher.forward(request, response);
 	}
 	
 	private void nuevo(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
