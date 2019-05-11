@@ -65,4 +65,60 @@ public class CategoriasTest {
 				  Assert.fail("Fallo la prueba:" + e.getMessage());
 		}
 	}
+	
+	//Test Suite: Actualizar Categoria
+	
+	@Test
+	public void actualizarExitoso() {
+		try {
+			System.out.println("Categoria - Metodo actualizarExitoso");
+		    categoria = new Categoria(0,"CategoriaCreadaEXITOSO");
+		    categoriaDAO.insertar(categoria);
+		    categoria = categoriaDAO.obtenerPorNombre(categoria);
+		    categoria = Categoria.builder().setId(categoria.getId()).setNombre("Mochila").build();
+			Assert.assertTrue(categoriaDAO.actualizar(categoria));
+			//Para que la prueba sea repetible, eliminamos la categoria insertada con columna de nombre UNIQUE
+			categoriaDAO.eliminar(categoria);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Fallo la prueba:" + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void actualizarNombreVacio() {
+		try {
+			System.out.println("Categoria - Metodo actualizarNombreVacio");
+		    categoria = new Categoria(0,"CategoriaCreadaVACIO");
+		    categoriaDAO.insertar(categoria);
+		    categoria = categoriaDAO.obtenerPorNombre(categoria);
+		    categoria = Categoria.builder().setId(categoria.getId()).setNombre("").build();
+			Assert.assertFalse(categoriaDAO.actualizar(categoria));
+			//Para que la prueba sea repetible, eliminamos la categoria insertada con columna de nombre UNIQUE
+			categoriaDAO.eliminar(categoria);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Fallo la prueba:" + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void actualizarNombreNumerico() {
+		try {
+			System.out.println("Categoria - Metodo actualizarNombreNumerico");
+		    categoria = new Categoria(0,"CategoriaCreadaNUMERICO");
+		    categoriaDAO.insertar(categoria);
+		    categoria = categoriaDAO.obtenerPorNombre(categoria);
+		    categoria = Categoria.builder().setId(categoria.getId()).setNombre("123456").build();
+			Assert.assertFalse(categoriaDAO.actualizar(categoria));
+			//Para que la prueba sea repetible, eliminamos la categoria insertada con columna de nombre UNIQUE
+			categoriaDAO.eliminar(categoria);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Fallo la prueba:" + e.getMessage());
+		}
+	}
 }
