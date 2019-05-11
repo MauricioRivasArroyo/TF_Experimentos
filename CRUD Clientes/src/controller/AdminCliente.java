@@ -19,6 +19,7 @@ import model.Cliente;
 public class AdminCliente extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	ClienteDAO clienteDAO;
+	Cliente clienteActual;
  
 	public void init() {
 		String jdbcURL = "jdbc:mysql://localhost:3306/ventas?user=root&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
@@ -91,15 +92,17 @@ public class AdminCliente extends HttpServlet {
 	}
  
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		if(clienteDAO.ValidacionNumeros(request.getParameter("cedula"))== true) {
-			Cliente cliente = new Cliente(0,request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"));
-			clienteDAO.insertar(cliente);
-			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+		
+		if(request.getParameter("cedula").equals("")) {	
+			System.out.println("Llenar campos obligatorios");
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/registrar.jsp");
 			dispatcher.forward(request, response);
+			
 		}
 		else {
-			System.out.println("la cedula solo numeros");
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/registrar.jsp");
+			Cliente cliente = new Cliente(0,request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("genero"),request.getParameter("categoria"),request.getParameter("correo"));
+			clienteDAO.insertar(cliente);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 			dispatcher.forward(request, response);
 		}
 		
@@ -121,15 +124,34 @@ public class AdminCliente extends HttpServlet {
 	private void showEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		Cliente cliente = clienteDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
 		request.setAttribute("cliente", cliente);		
+		clienteActual = cliente;
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/editar.jsp");
 		dispatcher.forward(request, response);
 	}
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-		Cliente cliente = new Cliente(Integer.parseInt(request.getParameter("id")), request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"));
-		clienteDAO.actualizar(cliente);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-		dispatcher.forward(request, response);
+		
+		if(clienteActual.getNombre().equals(request.getParameter("nombre")) && clienteActual.getApellido().equals(request.getParameter("apellido")) && clienteActual.getCedula().equals(request.getParameter("cedula")) && clienteActual.getGenero().equals(request.getParameter("genero"))
+				&& clienteActual.getCategoria().equals(request.getParameter("categoria")) && clienteActual.getCorreo().equals(request.getParameter("correo"))) {
+			System.out.println("No se realizaron modificaciones");
+			Cliente cliente = new Cliente(Integer.parseInt(request.getParameter("id")), request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("genero"),request.getParameter("categoria"),request.getParameter("correo"));
+			clienteDAO.actualizar(cliente);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+			dispatcher.forward(request, response);
+
+		}else if(!clienteDAO.ValidacionLetras(request.getParameter("nombre"))){
+			System.out.println("Error en el formulario");			
+			 Cliente cliente = clienteActual;
+			request.setAttribute("cliente", cliente);		
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/editar.jsp");
+			dispatcher.forward(request, response);
+		}else {		
+			Cliente cliente = new Cliente(Integer.parseInt(request.getParameter("id")), request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("genero"),request.getParameter("categoria"),request.getParameter("correo"));
+			clienteDAO.actualizar(cliente);
+			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
+			dispatcher.forward(request, response);
+		}
+		
 
 	}
 	

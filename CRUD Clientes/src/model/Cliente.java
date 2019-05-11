@@ -5,17 +5,28 @@ public class Cliente {
 	private String cedula;
 	private String nombre;
 	private String apellido;
+	private String genero;
+	private String categoria;
+	private String correo;
+
 	
 	public Cliente() {
 	}
 	
-	public Cliente(int id,String cedula, String nombre, String apellido) {
+	public Cliente(int id,String cedula, String nombre, String apellido,String genero,String categoria,String correo) {
 		this.id = id;
 		this.cedula = cedula;
 		this.nombre = nombre;
 		this.apellido = apellido;
-	}
+		this.genero = genero;
+		this.categoria = categoria;
+		this.correo = correo;
 
+
+	}
+	
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -46,6 +57,30 @@ public class Cliente {
 
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}	
 	
 }

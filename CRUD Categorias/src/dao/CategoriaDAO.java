@@ -49,7 +49,7 @@ public class CategoriaDAO {
 		while (resulSet.next()) {
 			int id = resulSet.getInt("id");
 			String nombre = resulSet.getString("nombre");		
-			Categoria categoria = new Categoria(id, nombre);
+			Categoria categoria =  Categoria.builder().setId(id).setNombre(nombre).build();
 			listaCategoria.add(categoria);
 		}
 		con.desconectar();
@@ -67,7 +67,7 @@ public class CategoriaDAO {
  
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
-			categoria = new Categoria(res.getInt("id"),res.getString("nombre"));
+			categoria =  Categoria.builder().setId(res.getInt("id")).setNombre(res.getString("nombre")).build();
 		}
 		res.close();
 		con.desconectar();

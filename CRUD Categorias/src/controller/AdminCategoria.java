@@ -118,7 +118,7 @@ public class AdminCategoria extends HttpServlet {
 	}
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-		Categoria categoria = new Categoria(Integer.parseInt(request.getParameter("id")), request.getParameter("nombre"));
+		Categoria categoria =  Categoria.builder().setId(Integer.parseInt(request.getParameter("id"))).setNombre(request.getParameter("nombre")).build();
 		categoriaDAO.actualizar(categoria);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);

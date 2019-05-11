@@ -27,6 +27,26 @@ public class ClienteDAO {
 			return false;
 		}	
 	}
+	public boolean ValidacionLetras(String cad) {
+		boolean num = false;
+		boolean str = false;
+		boolean ex = false;
+		for(int i = 0;i<cad.length();i++) {
+			if(Character.isDigit(cad.charAt(i)) == true) {
+				num = true;
+			}else if (Character.isLetter(cad.charAt(i)) == true){
+				str = true;
+			}else { 
+				ex = true;
+			}
+			
+		}		
+		if (num == false && str == true && ex == false) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	public boolean ValidacionAlfanumerico(String cad) {
 		boolean num = false;
 		boolean str = false;
@@ -57,7 +77,12 @@ public class ClienteDAO {
  
 	public boolean insertar(Cliente cliente) throws SQLException {		
 		boolean registrar = false;
-		String sql = "INSERT INTO cliente values (NULL,'"+cliente.getCedula()+"','"+cliente.getNombre()+"','"+cliente.getApellido()+"')";
+		if((cliente.getCedula().equals("") || cliente.getNombre().equals("") || cliente.getApellido().equals("") || cliente.getGenero().equals(""))  || 
+				(ValidacionLetras(cliente.getNombre())== true || ValidacionLetras(cliente.getApellido())== true)) {	
+			return registrar;
+				}else {
+		
+		String sql = "INSERT INTO cliente values (NULL,'"+cliente.getCedula()+"','"+cliente.getNombre()+"','"+cliente.getApellido()+"','"+cliente.getGenero()+"','"+cliente.getCategoria()+"','"+cliente.getCorreo()+"')";
 		try {
 			con.conectar();
 			connection = con.getJdbcConnection();
@@ -71,6 +96,7 @@ public class ClienteDAO {
 				e.printStackTrace();
 			}
 		return registrar;
+		}
 	}
  
 	public List<Cliente> listarClientes() throws SQLException {
@@ -87,7 +113,10 @@ public class ClienteDAO {
 			String cedula = resulSet.getString("cedula");
 			String nombre = resulSet.getString("nombre");
 			String apellido = resulSet.getString("apellido");
-			Cliente cliente = new Cliente(id, cedula, nombre, apellido);
+			String genero = resulSet.getString("genero");
+			String categoria = resulSet.getString("categoria_cliente");
+			String correo = resulSet.getString("correo");
+			Cliente cliente = new Cliente(id, cedula, nombre, apellido,genero,categoria,correo);
 			listaCliente.add(cliente);
 		}
 		con.desconectar();
@@ -106,7 +135,7 @@ public class ClienteDAO {
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
 			cliente = new Cliente(res.getInt("id"), res.getString("cedula"), res.getString("nombre"),
-					res.getString("apellido"));
+					res.getString("apellido"),res.getString("genero"),res.getString("categoria_cliente"),res.getString("correo"));
 		}
 		res.close();
 		con.desconectar();
@@ -117,14 +146,19 @@ public class ClienteDAO {
 	// actualizar
 	public boolean actualizar(Cliente cliente) throws SQLException {
 		boolean rowActualizar = false;
-		String sql = "UPDATE cliente SET cedula=?,nombre=?,apellido=? WHERE id=?";
+		
+		String sql = "UPDATE cliente SET cedula=?,nombre=?,apellido=?,genero=?,categoria_cliente=?,correo=? WHERE id=?";
 		con.conectar();
 		connection = con.getJdbcConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, cliente.getCedula());
 		statement.setString(2, cliente.getNombre());
 		statement.setString(3, cliente.getApellido());
-		statement.setInt(4, cliente.getId());
+		statement.setString(4, cliente.getGenero());
+		statement.setString(5, cliente.getCategoria());
+		statement.setString(6, cliente.getCorreo());
+		statement.setInt(7, cliente.getId());
+		
  
 		rowActualizar = statement.executeUpdate() > 0;
 		statement.close();
