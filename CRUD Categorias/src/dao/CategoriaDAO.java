@@ -78,10 +78,31 @@ public class CategoriaDAO {
  
 		return categoria;
 	}
+	
+	public Categoria obtenerPorNombre(Categoria categoria) throws SQLException {
+ 
+		String sql = "SELECT * FROM categoria WHERE nombre= ? ";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, categoria.getNombre());
+ 
+		ResultSet res = statement.executeQuery();
+		if (res.next()) {
+			categoria =  Categoria.builder().setId(res.getInt("id")).setNombre(res.getString("nombre")).build();
+		}
+		res.close();
+		con.desconectar();
+ 
+		return categoria;
+	}
  
 	// actualizar
 	public boolean actualizar(Categoria categoria) throws SQLException {
 		boolean rowActualizar = false;
+		if (categoria.getNombre().isEmpty() || categoria.getNombre().matches("[0-9]+")) {
+			return false;
+		}
 		String sql = "UPDATE categoria SET nombre=? WHERE id=?";
 		con.conectar();
 		connection = con.getJdbcConnection();
