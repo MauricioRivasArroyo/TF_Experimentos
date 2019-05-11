@@ -105,6 +105,25 @@ public class CategoriasTest {
 	}
 	
 	@Test
+	public void actualizarExitosoYObservarCambios() {
+		try {
+			System.out.println("Categoria - Metodo actualizarExitosoYObservarCambios");
+		    categoria = new Categoria(0,"CategoriaCreadaEXITOSOYCAMBIOS");
+		    categoriaDAO.insertar(categoria);
+		    categoria = categoriaDAO.obtenerPorNombre(categoria);
+		    categoria = Categoria.builder().setId(categoria.getId()).setNombre("Ropa").build();
+		    Categoria categoriaRopa = categoriaDAO.obtenerPorNombre(categoria);
+			Assert.assertTrue(categoriaRopa != null);
+			//Para que la prueba sea repetible, eliminamos la categoria insertada con columna de nombre UNIQUE
+			categoriaDAO.eliminar(categoria);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Fallo la prueba:" + e.getMessage());
+		}
+	} 
+	
+	@Test
 	public void actualizarNombreNumerico() {
 		try {
 			System.out.println("Categoria - Metodo actualizarNombreNumerico");
