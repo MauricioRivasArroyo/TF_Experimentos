@@ -22,6 +22,10 @@ public class CategoriaDAO {
 	public boolean insertar(Categoria categoria) throws SQLException {		
 		boolean registrar = false;
 		String sql = "INSERT INTO categoria values (NULL,'"+categoria.getNombre()+"')";
+
+		if (categoria.getNombre().isEmpty() || categoria.getNombre().matches("[0-9]+")) {
+			return false;
+		}
 		try {
 			con.conectar();
 			connection = con.getJdbcConnection();
@@ -74,10 +78,31 @@ public class CategoriaDAO {
  
 		return categoria;
 	}
+	
+	public Categoria obtenerPorNombre(Categoria categoria) throws SQLException {
+ 
+		String sql = "SELECT * FROM categoria WHERE nombre= ? ";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, categoria.getNombre());
+ 
+		ResultSet res = statement.executeQuery();
+		if (res.next()) {
+			categoria =  Categoria.builder().setId(res.getInt("id")).setNombre(res.getString("nombre")).build();
+		}
+		res.close();
+		con.desconectar();
+ 
+		return categoria;
+	}
  
 	// actualizar
 	public boolean actualizar(Categoria categoria) throws SQLException {
 		boolean rowActualizar = false;
+		if (categoria.getNombre().isEmpty() || categoria.getNombre().matches("[0-9]+")) {
+			return false;
+		}
 		String sql = "UPDATE categoria SET nombre=? WHERE id=?";
 		con.conectar();
 		connection = con.getJdbcConnection();
@@ -105,4 +130,33 @@ public class CategoriaDAO {
  
 		return rowEliminar;
 	}
+	
+	public boolean eliminarPorNombre(Categoria categoria) throws SQLException {
+		boolean rowEliminar = false;
+		String sql = "DELETE FROM categoria WHERE nombre=?";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, categoria.getNombre());
+ 
+		rowEliminar = statement.executeUpdate() > 0;
+		statement.close();
+		con.desconectar();
+ 
+		return rowEliminar;
+	}
+
+	public boolean eliminarTodos() throws SQLException{
+		boolean rowEliminar = false;
+		String sql = "DELETE FROM categoria";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql); 
+		rowEliminar = statement.executeUpdate() > 0;
+		statement.close();
+		con.desconectar();
+ 
+		return rowEliminar;
+	}
+	
 }
