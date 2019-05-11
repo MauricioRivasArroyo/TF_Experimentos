@@ -1,5 +1,7 @@
 package test;
 
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -113,7 +115,7 @@ public class CategoriasTest {
 		    categoria = categoriaDAO.obtenerPorNombre(categoria);
 		    categoria = Categoria.builder().setId(categoria.getId()).setNombre("Ropa").build();
 		    Categoria categoriaRopa = categoriaDAO.obtenerPorNombre(categoria);
-			Assert.assertTrue(categoriaRopa != null);
+			Assert.assertNotNull(categoriaRopa);
 			//Para que la prueba sea repetible, eliminamos la categoria insertada con columna de nombre UNIQUE
 			categoriaDAO.eliminar(categoria);
 		}
@@ -140,4 +142,69 @@ public class CategoriasTest {
 			Assert.fail("Fallo la prueba:" + e.getMessage());
 		}
 	}
+	
+	//Test Suite: Visualizar listado de categorias
+	
+	@Test
+	public void visualizarListadoVacio() {
+		List<Categoria> categorias;
+		try {
+			System.out.println("Categoria - Metodo visualizarListadoVacio");
+			List<Categoria> categoriasCopia = categoriaDAO.listarCategorias();
+			categoriaDAO.eliminarTodos();
+			categorias = categoriaDAO.listarCategorias();
+			Assert.assertTrue(categorias.isEmpty());
+			for (Categoria categoria : categoriasCopia) {
+				//Necesita ser optimizado para no estar abriendo la conexion por cada insercion
+				//Posiblemente necesite tener un metodo que reciba una lista de parametro y trabaje los elementos con statements
+				categoriaDAO.insertar(categoria);
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			Assert.fail("Fallo la prueba: " + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void visualizarCategoriaModificada() {
+		List<Categoria> categorias;
+		try {
+			System.out.println("Categoria - Metodo visualizarCategoriaModificada");
+
+		    categoria = new Categoria(0,"CategoriaCreadaModificadaComprobada");
+		    categoriaDAO.insertar(categoria);
+		    categoria = categoriaDAO.obtenerPorNombre(categoria);
+		    categoria = Categoria.builder().setId(categoria.getId()).setNombre("Electrodomesticos").build();
+		    categoriaDAO.actualizar(categoria);
+		    Categoria categoriaElectrodomesticos = categoriaDAO.obtenerPorNombre(categoria);
+			Assert.assertEquals(categoriaElectrodomesticos.getNombre(), "Electrodomesticos");
+			//Para que la prueba sea repetible, eliminamos la categoria insertada con columna de nombre UNIQUE
+			categoriaDAO.eliminar(categoria);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			Assert.fail("Fallo la prueba: " + e.getMessage());
+		}
+	}
+	
+	@Test
+	public void visualizarCategoriaRegistrada() {
+		List<Categoria> categorias;
+		try {
+			System.out.println("Categoria - Metodo visualizarCategoriaRegistrada");
+
+		    categoria = new Categoria(0,"Herramientas");
+		    categoriaDAO.insertar(categoria);
+		    categoria = categoriaDAO.obtenerPorNombre(categoria);
+		    Categoria categoriaHerramientas = categoriaDAO.obtenerPorNombre(categoria);
+			Assert.assertEquals(categoriaHerramientas.getNombre(), "Herramientas");
+			//Para que la prueba sea repetible, eliminamos la categoria insertada con columna de nombre UNIQUE
+			categoriaDAO.eliminar(categoria);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			Assert.fail("Fallo la prueba: " + e.getMessage());
+		}
+	}	
 }

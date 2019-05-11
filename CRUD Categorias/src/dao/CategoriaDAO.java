@@ -146,4 +146,17 @@ public class CategoriaDAO {
 		return rowEliminar;
 	}
 
+	public boolean eliminarTodos() throws SQLException{
+		boolean rowEliminar = false;
+		String sql = "DELETE FROM categoria";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql); 
+		rowEliminar = statement.executeUpdate() > 0;
+		statement.close();
+		con.desconectar();
+ 
+		return rowEliminar;
+	}
+	
 }
