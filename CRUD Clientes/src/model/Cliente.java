@@ -1,4 +1,5 @@
 package model;
+ 
 
 public class Cliente {
 	private int id;	
@@ -82,5 +83,9 @@ public class Cliente {
 	public void setCorreo(String correo) {
 		this.correo = correo;
 	}	
+	
+	public String toString() {
+		return "" + this.id + this.cedula + this.nombre + this.apellido + this.genero + this.categoria + this.correo;
+	}
 	
 }
