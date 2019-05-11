@@ -19,10 +19,34 @@ public class ProductoDAO {
 	public ProductoDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) throws SQLException {
 		con = new Conexion(jdbcURL, jdbcUsername, jdbcPassword);
 	}
+	
+	public boolean ValidacionLetras(String cad) {
+		boolean num = false;
+		boolean str = false;
+		boolean ex = false;
+		for(int i = 0;i<cad.length();i++) {
+			if(Character.isDigit(cad.charAt(i)) == true) {
+				num = true;
+			}else if (Character.isLetter(cad.charAt(i)) == true){
+				str = true;
+			}else { 
+				ex = true;
+			}
+			
+		}		
+		if (num == false && str == true && ex == false) {
+			return true;
+		}else {
+			return false;
+		}
+	}
  
 	public boolean insertar(Producto producto) throws SQLException {		
 		boolean registrar = false;
-		String sql = "INSERT INTO producto values (NULL,'"+producto.getNombre()+"','"+producto.getCategoria()+"')";
+		if(producto.getNombre().equals("") || producto.getCategoria() == 0 || ValidacionLetras(producto.getNombre()) == false) {
+			return registrar;
+		}else {
+		String sql = "INSERT INTO producto values (NULL,'"+producto.getNombre()+"','"+producto.getCategoria()+"','"+producto.getCodigo()+"')";
 		try {
 			con.conectar();
 			connection = con.getJdbcConnection();
@@ -36,6 +60,7 @@ public class ProductoDAO {
 				e.printStackTrace();
 			}
 		return registrar;
+		}
 	}
 	public List<Categoria> listarCategorias() throws SQLException{
 		List<Categoria> listaCategoria = new ArrayList<Categoria>();
@@ -48,6 +73,7 @@ public class ProductoDAO {
 			int id = resulSet.getInt("id");
 			String nombre = resulSet.getString("nombre");
 			Categoria categoria = new Categoria(id, nombre );
+
 			listaCategoria.add(categoria);
 		}
 		con.desconectar();
@@ -67,7 +93,8 @@ public class ProductoDAO {
 			int id = resulSet.getInt("id");
 			String nombre = resulSet.getString("nombre");
 			int categoria = resulSet.getInt("idCategoria");
-			Producto producto = new Producto(id, nombre, categoria);
+			String codigo = resulSet.getString("codigo");
+			Producto producto = new Producto(id, nombre, categoria,codigo);
 			listaProducto.add(producto);
 		}
 		con.desconectar();
@@ -86,7 +113,26 @@ public class ProductoDAO {
 		ResultSet res = statement.executeQuery();
 		if (res.next()) {
 			producto = new Producto(res.getInt("id"),  res.getString("nombre"),
-					res.getInt("idCategoria"));
+					res.getInt("idCategoria"),res.getString("codigo"));
+		}
+		res.close();
+		con.desconectar();
+ 
+		return producto;
+	}
+	public Producto obtenerPorCodigo(String codigo) throws SQLException {
+		Producto producto = null;
+ 
+		String sql = "SELECT * FROM producto WHERE codigo= ? ";
+		con.conectar();
+		connection = con.getJdbcConnection();
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, codigo);
+ 
+		ResultSet res = statement.executeQuery();
+		if (res.next()) {
+			producto = new Producto(res.getInt("id"),  res.getString("nombre"),
+					res.getInt("idCategoria"),res.getString("codigo"));
 		}
 		res.close();
 		con.desconectar();
@@ -94,30 +140,33 @@ public class ProductoDAO {
 		return producto;
 	}
  
-	// actualizar
 	public boolean actualizar(Producto producto) throws SQLException {
 		boolean rowActualizar = false;
-		String sql = "UPDATE producto SET nombre=?,idCategoria=? WHERE id=?";
+		if(producto.getNombre().equals("") || producto.getCategoria() == 0 || ValidacionLetras(producto.getNombre()) == false) {
+			return rowActualizar;
+		}else {
+		String sql = "UPDATE producto SET nombre=?,idCategoria=? WHERE codigo=?";
 		con.conectar();
 		connection = con.getJdbcConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, producto.getNombre());
 		statement.setInt(2, producto.getCategoria());
-		statement.setInt(3, producto.getId());
+		statement.setString(3, producto.getCodigo());
  
 		rowActualizar = statement.executeUpdate() > 0;
 		statement.close();
 		con.desconectar();
 		return rowActualizar;
+		}
 	}
 	
 	public boolean eliminar(Producto producto) throws SQLException {
 		boolean rowEliminar = false;
-		String sql = "DELETE FROM producto WHERE ID=?";
+		String sql = "DELETE FROM producto WHERE codigo=?";
 		con.conectar();
 		connection = con.getJdbcConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, producto.getId());
+		statement.setString(1, producto.getCodigo());
  
 		rowEliminar = statement.executeUpdate() > 0;
 		statement.close();

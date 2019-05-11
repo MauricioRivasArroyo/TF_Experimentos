@@ -4,14 +4,17 @@ public class Producto {
 	private int id;	
 	private String nombre;
 	private int categoria;
+	private String codigo;
+
 	
 	public Producto() {
 	}
 	
-	public Producto(int id,String nombre, int categoria) {
+	public Producto(int id,String nombre, int categoria, String codigo) {
 		this.id = id;
 		this.nombre = nombre;
 		this.categoria = categoria;
+		this.codigo = codigo;
 	}
 
 	public int getId() {
@@ -36,6 +39,14 @@ public class Producto {
 
 	public void setCategoria(int categoria) {
 		this.categoria = categoria;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}	
 	
 }

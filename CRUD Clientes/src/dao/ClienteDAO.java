@@ -12,11 +12,15 @@ import model.Cliente;
 import model.Conexion;
 
 public class ClienteDAO {
-	private Conexion con;
+	private Conexion con ;
 	private Connection connection;
  
 	public ClienteDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) throws SQLException {
-		con = new Conexion(jdbcURL, jdbcUsername, jdbcPassword);
+	Conexion.setJdbcURL(jdbcURL);
+	Conexion.setJdbcUsername(jdbcUsername);
+	Conexion.setJdbcPassword(jdbcPassword);	 
+     con = Conexion.getSubFactory(Conexion.MySql);
+		
 	}
 	public boolean ValidacionNumeros(String cad) {
 		int num;

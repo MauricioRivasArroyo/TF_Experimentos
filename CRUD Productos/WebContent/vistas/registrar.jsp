@@ -24,7 +24,10 @@
 			</c:forEach>
 			</select></td>	
 		</tr>		
-		
+		<tr>
+			<th scope="row"><a>Codigo:</a></th>		
+			<td><input type="text" name="codigo"/></td>	
+		</tr>
 		</table>
 	<br>
 	<table border="0" align="center">

@@ -2,7 +2,6 @@ package test;
 
 import org.junit.Assert;
 import org.junit.Test;
-
 import dao.ClienteDAO;
 import model.Cliente;
 

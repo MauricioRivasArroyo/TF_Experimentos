@@ -27,6 +27,10 @@
 			<option value="<c:out value="${cat.id}"></c:out>"><c:out value="${cat.nombre}"></c:out></option>
 			</c:forEach>
 			</select></td>
+			<tr>
+				<th scope="row"><label>Codigo</label></th>
+				<td><input type="text" name="codigo" value="<c:out value="${producto.codigo}"></c:out>" ></td>
+			</tr>
 			</tr>
 		</table>
 	
