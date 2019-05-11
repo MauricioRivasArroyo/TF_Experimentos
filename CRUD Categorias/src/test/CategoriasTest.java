@@ -206,5 +206,23 @@ public class CategoriasTest {
 			e.printStackTrace();
 			Assert.fail("Fallo la prueba: " + e.getMessage());
 		}
-	}	
+	}
+	
+	//Test Suite: Eliminar Categoria
+	
+	@Test
+	public void eliminarCategoria() {
+		try {
+			System.out.println("Categoria - Metodo eliminarCategoria");
+			
+			List<Categoria> categorias = categoriaDAO.listarCategorias();
+			Categoria ultimaCategoria = categorias.get(categorias.size()-1);
+			Assert.assertTrue(categoriaDAO.eliminar(ultimaCategoria));
+			Assert.assertNull(categoriaDAO.obtenerPorId(ultimaCategoria.getId()));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail();
+		}		
+	}
 }
