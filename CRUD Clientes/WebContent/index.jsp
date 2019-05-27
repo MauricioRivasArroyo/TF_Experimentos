@@ -8,7 +8,7 @@
 <title>Clientes</title>
 </head>
 <body>
-	<h2>Administrar Clientes</h2>
+	<h2>Administrar Clientes</h2>	
 	<table align="center" class="table">
 		<tr>
 			<td align="center"><a href="adminCliente?action=nuevo">Nuevo</a></td>			

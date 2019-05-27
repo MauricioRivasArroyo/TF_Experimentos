@@ -15,7 +15,7 @@ public class CategoriasTest {
 	public CategoriasTest() {
 	 	String jdbcURL = "jdbc:mysql://localhost:3306/ventas?user=root&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 		String jdbcUsername = "root";
-		String jdbcPassword = "root";
+		String jdbcPassword = "";
 	   try {
 		    categoriaDAO = new CategoriaDAO(jdbcURL, jdbcUsername, jdbcPassword);		   
 	   }
@@ -216,9 +216,14 @@ public class CategoriasTest {
 			System.out.println("Categoria - Metodo eliminarCategoria");
 			
 			List<Categoria> categorias = categoriaDAO.listarCategorias();
+			if(categorias.size()>0) {
 			Categoria ultimaCategoria = categorias.get(categorias.size()-1);
+			
 			Assert.assertTrue(categoriaDAO.eliminar(ultimaCategoria));
 			Assert.assertNull(categoriaDAO.obtenerPorId(ultimaCategoria.getId()));
+			}else {
+				Assert.assertTrue(true);
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();

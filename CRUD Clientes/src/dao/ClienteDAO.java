@@ -81,6 +81,9 @@ public class ClienteDAO {
  
 	public boolean insertar(Cliente cliente) throws SQLException {		
 		boolean registrar = false;
+		if (cliente == null) { 
+			return registrar;
+		}else {
 		if((cliente.getCedula().equals("") || cliente.getNombre().equals("") || cliente.getApellido().equals("") || cliente.getGenero().equals(""))  || 
 				(ValidacionLetras(cliente.getNombre())== false || ValidacionLetras(cliente.getApellido())== false)) {	
 			return registrar;
@@ -101,8 +104,26 @@ public class ClienteDAO {
 			}
 		return registrar;
 		}
+		}
 	}
- 
+	public Cliente insertar2(Cliente cliente) throws SQLException {		
+		
+		String sql = "INSERT INTO cliente values (NULL,'"+cliente.getCedula()+"','"+cliente.getNombre()+"','"+cliente.getApellido()+"','"+cliente.getGenero()+"','"+cliente.getCategoria()+"','"+cliente.getCorreo()+"')";
+		try {
+			con.conectar();
+			connection = con.getJdbcConnection();
+			Statement stm= connection.createStatement();
+			stm.execute(sql);
+			stm.close();
+			connection.close();			
+			} catch (SQLException e) {
+				System.out.println("Error: método registrar");
+				e.printStackTrace();
+			}
+		return cliente;
+		}
+		
+	
 	public List<Cliente> listarClientes() throws SQLException {
  
 		List<Cliente> listaCliente = new ArrayList<Cliente>();
@@ -170,7 +191,7 @@ public class ClienteDAO {
 				&& clienteBD.getApellido().equals(cliente.getApellido()) && clienteBD.getCorreo().equals(cliente.getCorreo()) 
 				&& clienteBD.getGenero().equals(cliente.getGenero()) && clienteBD.getCategoria().equals(cliente.getCategoria())
 				)|| ValidacionLetras(cliente.getNombre()) == false) {
-			return rowActualizar;
+			return true;
 		}else {
 		String sql = "UPDATE cliente SET nombre=?,apellido=?,genero=?,categoria_cliente=?,correo=? WHERE cedula=?";
 		con.conectar();

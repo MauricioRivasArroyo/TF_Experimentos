@@ -25,8 +25,8 @@
 		</tr>		
 		<tr>
 			<th scope="row"><a>Genero:</a></th>		
-			<td><input type="radio" name="genero" value="masculino"/>M
-			<input type="radio" name="genero" value="femenino"/>F</td>	
+			<td><input type="radio"  id ="m"name="genero" value="masculino"/>M
+			<input type="radio" id="f" name="genero" value="femenino"/>F</td>	
 		</tr>
 		<tr>
 			<th scope="row"><a>Categoria:</a></th>		
@@ -42,7 +42,7 @@
 	<br>
 	<table border="0" align="center">
 		<tr>
-		<td><button type="submit" class="btn btn-secondary">Agregar</button></td>	
+		<td><button type="submit" name="registrar" class="btn btn-secondary">Agregar</button></td>	
 		</tr>
 		</table>
 	</form>

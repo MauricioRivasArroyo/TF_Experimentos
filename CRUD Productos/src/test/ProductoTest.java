@@ -62,11 +62,12 @@ public class ProductoTest {
 		 String jdbcUsername = "root";
 		 String jdbcPassword = "";
 		 System.out.println("Metodo actualizar"); 
-		  producto = new Producto(0,"nombre",4,"12345");
-		 productoDAO = new ProductoDAO(jdbcURL, jdbcUsername, jdbcPassword);				 
+		  producto = new Producto(0,"nombre",3,"12345");	      
+		 productoDAO = new ProductoDAO(jdbcURL, jdbcUsername, jdbcPassword); 
+		 productoDAO.insertar(producto);
+		 producto.setCategoria(4);
 		  Assert.assertTrue(productoDAO.actualizar(producto));
-		  producto.setCategoria(3);
-		  productoDAO.actualizar(producto);
+			productoDAO.eliminar(producto);
 	  }	  catch (Exception e){
 		  e.printStackTrace();
 		  Assert.fail("Fallo la prueba:" + e.getMessage());
@@ -79,9 +80,12 @@ public class ProductoTest {
 		 String jdbcUsername = "root";
 		 String jdbcPassword = "";
 		 System.out.println("Metodo actualizar"); 
-		  producto = new Producto(0,"",3,"12345");
-		 productoDAO = new ProductoDAO(jdbcURL, jdbcUsername, jdbcPassword);				 
-		  Assert.assertFalse(productoDAO.actualizar(producto));		
+		  producto = new Producto(0,"nombre",3,"87879");
+		 productoDAO = new ProductoDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		 productoDAO.insertar(producto);
+		 producto.setNombre("");
+		  Assert.assertFalse(productoDAO.actualizar(producto));	
+		  productoDAO.eliminar(producto);
 	  }	  catch (Exception e){
 		  e.printStackTrace();
 		  Assert.fail("Fallo la prueba:" + e.getMessage());
@@ -94,10 +98,10 @@ public class ProductoTest {
 		 String jdbcUsername = "root";
 		 String jdbcPassword = "";
 		 System.out.println("Metodo eliminar"); 
-		  producto = new Producto(0,"nombre",3,"12345");
-		 productoDAO = new ProductoDAO(jdbcURL, jdbcUsername, jdbcPassword);				 
+		  producto = new Producto(0,"nombre",3,"12345");		  
+		 productoDAO = new ProductoDAO(jdbcURL, jdbcUsername, jdbcPassword);
+		 productoDAO.insertar(producto);				 
 		  Assert.assertTrue(productoDAO.eliminar(producto));	
-		  productoDAO.insertar(producto);
 	  }	  catch (Exception e){
 		  e.printStackTrace();
 		  Assert.fail("Fallo la prueba:" + e.getMessage());
