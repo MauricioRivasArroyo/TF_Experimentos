@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.ProductoDAO;
 import model.Categoria;
 import model.Producto;
+import model.ProductoResponse;
 
 @WebServlet("/adminProducto")
 public class AdminProducto extends HttpServlet {
@@ -91,8 +92,8 @@ public class AdminProducto extends HttpServlet {
 	}
  
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		Producto producto = new Producto(0, request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
-		productoDAO.insertar(producto);		
+		//Producto producto = new Producto(0, request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
+		//productoDAO.insertar(producto);		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -107,7 +108,7 @@ public class AdminProducto extends HttpServlet {
 	
 	private void mostrar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException , ServletException{
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/mostrar.jsp");
-		List<Producto> listaProductos= productoDAO.listarProductos();
+		List<ProductoResponse> listaProductos= productoDAO.listarProductos();
 		request.setAttribute("lista", listaProductos);
 		dispatcher.forward(request, response);
 	}	
@@ -122,8 +123,8 @@ public class AdminProducto extends HttpServlet {
 	}
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-		Producto producto = new Producto(Integer.parseInt(request.getParameter("id")),  request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
-		productoDAO.actualizar(producto);
+		//Producto producto = new Producto(Integer.parseInt(request.getParameter("id")),  request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
+		//productoDAO.actualizar(producto);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 

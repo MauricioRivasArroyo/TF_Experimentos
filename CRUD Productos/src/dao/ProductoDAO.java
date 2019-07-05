@@ -7,8 +7,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
- 
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+
+/*import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;*/
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import model.Producto;
+import model.ProductoResponse;
 import model.Categoria;
 import model.Conexion;
 
@@ -80,9 +96,17 @@ public class ProductoDAO {
 		return listaCategoria;
 	}
  
-	public List<Producto> listarProductos() throws SQLException {
+	public List<ProductoResponse> listarProductos() throws SQLException {
+		Client client = ClientBuilder.newClient();
+		WebTarget target = client.target("http://ventas-crud-services.herokuapp.com/ListarClientes");
+		String response = target.request(MediaType.APPLICATION_JSON).get(String.class);
+		System.out.println(response);
+		
+		Gson gson = new Gson();
+		List<ProductoResponse> productos = gson.fromJson(response, new GenericType<List<ProductoResponse>>(){}.getType());
+		System.out.println("Productos: "+ productos.toString());
  
-		List<Producto> listaProducto = new ArrayList<Producto>();
+/*		List<Producto> listaProducto = new ArrayList<Producto>();
 		String sql = "SELECT * FROM producto";
 		con.conectar();
 		connection = con.getJdbcConnection();
@@ -97,8 +121,9 @@ public class ProductoDAO {
 			Producto producto = new Producto(id, nombre, categoria,codigo);
 			listaProducto.add(producto);
 		}
-		con.desconectar();
-		return listaProducto;
+		con.desconectar();*/
+		
+		return productos;
 	}
  
 	public Producto obtenerPorId(int id) throws SQLException {

@@ -32,7 +32,7 @@
 				<td><c:out value="${producto.id}"/></td>
 				<td><c:out value="${producto.nombre}"/></td>
 				<td><c:out value="${producto.categoria}"/></td>
-				<td><c:out value="${producto.codigo}"/></td>				
+				<td><c:out value="${producto.id}"/></td>				
 				<td><a type="button" class="btn btn-secondary" href="adminProducto?action=showedit&id=<c:out value="${producto.id}" />">Editar</a>
 				<a type="button" class="btn btn-secondary" href="adminProducto?action=eliminar&id=<c:out value="${producto.id}" />">Eliminar</a> </td>				
 			</tr>
