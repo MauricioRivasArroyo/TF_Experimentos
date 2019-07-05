@@ -108,7 +108,7 @@ public class AdminProducto extends HttpServlet {
 	
 	private void mostrar(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException , ServletException{
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/mostrar.jsp");
-		List<ProductoResponse> listaProductos= productoDAO.listarProductos();
+		List<Producto> listaProductos= productoDAO.listarProductos();
 		request.setAttribute("lista", listaProductos);
 		dispatcher.forward(request, response);
 	}	

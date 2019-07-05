@@ -96,33 +96,13 @@ public class ProductoDAO {
 		return listaCategoria;
 	}
  
-	public List<ProductoResponse> listarProductos() throws SQLException {
+	public List<Producto> listarProductos() throws SQLException {
 		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://ventas-crud-services.herokuapp.com/ListarClientes");
+		WebTarget target = client.target("http://ventas-crud-services.herokuapp.com/ListarProductos");
 		String response = target.request(MediaType.APPLICATION_JSON).get(String.class);
-		System.out.println(response);
 		
 		Gson gson = new Gson();
-		List<ProductoResponse> productos = gson.fromJson(response, new GenericType<List<ProductoResponse>>(){}.getType());
-		System.out.println("Productos: "+ productos.toString());
- 
-/*		List<Producto> listaProducto = new ArrayList<Producto>();
-		String sql = "SELECT * FROM producto";
-		con.conectar();
-		connection = con.getJdbcConnection();
-		Statement statement = connection.createStatement();
-		ResultSet resulSet = statement.executeQuery(sql);
- 
-		while (resulSet.next()) {
-			int id = resulSet.getInt("id");
-			String nombre = resulSet.getString("nombre");
-			int categoria = resulSet.getInt("idCategoria");
-			String codigo = resulSet.getString("codigo");
-			Producto producto = new Producto(id, nombre, categoria,codigo);
-			listaProducto.add(producto);
-		}
-		con.desconectar();*/
-		
+		List<Producto> productos = gson.fromJson(response, new GenericType<List<Producto>>(){}.getType());
 		return productos;
 	}
  
