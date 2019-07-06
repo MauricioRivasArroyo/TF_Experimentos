@@ -54,7 +54,6 @@ public class AdminProducto extends HttpServlet {
 				nuevo(request, response);
 				break;
 			case "register":
-				System.out.println("entro");
 				registrar(request, response);
 				break;
 			case "mostrar":
@@ -92,8 +91,8 @@ public class AdminProducto extends HttpServlet {
 	}
  
 	private void registrar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		//Producto producto = new Producto(0, request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
-		//productoDAO.insertar(producto);		
+		Producto producto = new Producto(0, request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
+		productoDAO.insertar(producto);		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -123,15 +122,14 @@ public class AdminProducto extends HttpServlet {
 	}
 	
 	private void editar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-		//Producto producto = new Producto(Integer.parseInt(request.getParameter("id")),  request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
-		//productoDAO.actualizar(producto);
+		Producto producto = new Producto(Integer.parseInt(request.getParameter("id")),  request.getParameter("nombre"), Integer.parseInt(request.getParameter("categoria")),request.getParameter("codigo"));
+		productoDAO.actualizar(producto);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
 
 	}
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
-		System.out.println(request.getParameter("id"));
 		Producto producto = productoDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
 		productoDAO.eliminar(producto);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
