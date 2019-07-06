@@ -14,26 +14,21 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
-/*import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;*/
-
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 import model.Producto;
-import model.ProductoResponse;
 import model.Categoria;
 import model.Conexion;
 
 public class ProductoDAO {
 	private Conexion con;
 	private Connection connection;
+	private Client client;
+	private WebTarget target;
  
 	public ProductoDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) throws SQLException {
 		con = new Conexion(jdbcURL, jdbcUsername, jdbcPassword);
+		client = ClientBuilder.newClient();
 	}
 	
 	public boolean ValidacionLetras(String cad) {
@@ -97,8 +92,7 @@ public class ProductoDAO {
 	}
  
 	public List<Producto> listarProductos() throws SQLException {
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://ventas-crud-services.herokuapp.com/ListarProductos");
+		target = client.target("http://ventas-crud-services.herokuapp.com/ListarProductos");
 		String response = target.request(MediaType.APPLICATION_JSON).get(String.class);
 		
 		Gson gson = new Gson();
@@ -108,21 +102,11 @@ public class ProductoDAO {
  
 	public Producto obtenerPorId(int id) throws SQLException {
 		Producto producto = null;
- 
-		String sql = "SELECT * FROM producto WHERE id= ? ";
-		con.conectar();
-		connection = con.getJdbcConnection();
-		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, id);
- 
-		ResultSet res = statement.executeQuery();
-		if (res.next()) {
-			producto = new Producto(res.getInt("id"),  res.getString("nombre"),
-					res.getInt("idCategoria"),res.getString("codigo"));
-		}
-		res.close();
-		con.desconectar();
- 
+		target = client.target("http://ventas-crud-services.herokuapp.com/ObtenerProducto?id=" + id);
+		String response = target.request(MediaType.APPLICATION_JSON).get(String.class);
+		
+		Gson gson = new Gson();
+		producto = gson.fromJson(response, Producto.class); 
 		return producto;
 	}
 	public Producto obtenerPorCodigo(String codigo) throws SQLException {
@@ -167,7 +151,11 @@ public class ProductoDAO {
 	
 	public boolean eliminar(Producto producto) throws SQLException {
 		boolean rowEliminar = false;
-		String sql = "DELETE FROM producto WHERE codigo=?";
+		String id = Integer.toString(producto.getId());
+		System.out.println(id);
+		target = client.target("http://ventas-crud-services.herokuapp.com/BorrarProducto?id=" + id);
+		String response =target.request().delete(String.class);
+		/*String sql = "DELETE FROM producto WHERE codigo=?";
 		con.conectar();
 		connection = con.getJdbcConnection();
 		PreparedStatement statement = connection.prepareStatement(sql);
@@ -175,7 +163,7 @@ public class ProductoDAO {
  
 		rowEliminar = statement.executeUpdate() > 0;
 		statement.close();
-		con.desconectar();
+		con.desconectar();*/
  
 		return rowEliminar;
 	}

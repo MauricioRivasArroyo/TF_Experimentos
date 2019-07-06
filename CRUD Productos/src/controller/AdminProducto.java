@@ -131,6 +131,7 @@ public class AdminProducto extends HttpServlet {
 	}
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
+		System.out.println(request.getParameter("id"));
 		Producto producto = productoDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
 		productoDAO.eliminar(producto);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
