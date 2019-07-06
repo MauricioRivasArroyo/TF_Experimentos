@@ -61,7 +61,6 @@ public class ProductoDAO {
 																						"&codigo=" + producto.getCodigo());
 			
 			Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(new String(), MediaType.APPLICATION_JSON));
-			//TODO Verify if the product is on db and set the value of registrar accordingly
 			registrar = true;
 		}
 		return registrar;
@@ -119,6 +118,7 @@ public class ProductoDAO {
  
 	public boolean actualizar(Producto producto) throws SQLException {
 		boolean rowActualizar = false;
+		Producto productoDB = new Producto();
 		if (!(producto.getNombre().equals("") || producto.getCategoria() == 0 || ValidacionLetras(producto.getNombre()) == false)) {
 			target = client.target("http://ventas-crud-services.herokuapp.com/ActualizarProducto?id=" + producto.getId() +
 																						"&nombre=" + producto.getNombre() + 
@@ -126,8 +126,14 @@ public class ProductoDAO {
 																						"&codigo=" + producto.getCodigo());
 			
 			Response response = target.request(MediaType.APPLICATION_JSON).put(Entity.entity(new String(), MediaType.APPLICATION_JSON));
-			//TODO Verify if the product updates on db and set the value of rowActualizar accordingly
-			rowActualizar = true;
+			
+			productoDB = obtenerPorId(producto.getId());
+			boolean verificaNombre = productoDB.getNombre().equals(producto.getNombre());
+			boolean verificaCodigo = productoDB.getCodigo().equals(producto.getCodigo());
+			boolean verificaCategoria = productoDB.getCategoria() == producto.getCategoria();
+			if (verificaNombre && verificaCodigo && verificaCategoria) {
+				rowActualizar = true;
+			}
 		}
 		return rowActualizar;
 	}
@@ -137,9 +143,9 @@ public class ProductoDAO {
 		String id = Integer.toString(producto.getId());
 		target = client.target("http://ventas-crud-services.herokuapp.com/BorrarProducto?id=" + id);
 		String response = target.request().delete(String.class);
-
-		//TODO Verify if the product is not on db and set the value of rowEliminar accordingly
-		rowEliminar = true;
+		if (!response.isEmpty()) {
+			rowEliminar = true;			
+		}
 		return rowEliminar;
 	}
 }

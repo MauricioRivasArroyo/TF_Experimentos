@@ -74,8 +74,6 @@ public class AdminProducto extends HttpServlet {
 		} catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
-		
 	}
  
 	
