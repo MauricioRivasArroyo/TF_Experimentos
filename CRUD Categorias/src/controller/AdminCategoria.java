@@ -24,7 +24,6 @@ public class AdminCategoria extends HttpServlet {
 		String jdbcUsername = getServletContext().getInitParameter("jdbcUsername");
 		String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 		try {
- 
 			categoriaDAO = new CategoriaDAO(jdbcURL, jdbcUsername, jdbcPassword);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -73,8 +72,6 @@ public class AdminCategoria extends HttpServlet {
 		} catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
-		
 	}
  
 	
