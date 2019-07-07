@@ -74,9 +74,16 @@ public class AdminController extends HttpServlet{
 			case "nuevo_producto":
 				nuevo_producto(request, response);
 				break;
+			case "nuevo_usuario":
+				nuevo_usuario(request, response);
+				break;
 			case "registrar_cliente":
 				System.out.println("entro");
 				registrar_cliente(request, response);
+				break;
+			case "registrar_usuario":
+				System.out.println("entro");
+				registrar_usuario(request, response);
 				break;
 			case "registrar_categoria":
 				System.out.println("entro");
@@ -176,6 +183,10 @@ public class AdminController extends HttpServlet{
 			RequestDispatcher dispatcher= request.getRequestDispatcher("vistas/categorias/registrar_categoria.jsp");
 			dispatcher.forward(request, response);
 		}
+		private void nuevo_usuario(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
+			RequestDispatcher dispatcher= request.getRequestDispatcher("vistas/usuarios/registrar_usuario.jsp");
+			dispatcher.forward(request, response);
+		}
 		private void nuevo_producto(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
 			RequestDispatcher dispatcher= request.getRequestDispatcher("vistas/productos/registrar_producto.jsp");
 			List<Categoria> listaCategorias= ventasDAO.listarCategorias();
@@ -200,12 +211,21 @@ public class AdminController extends HttpServlet{
 				RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/menu_clientes.jsp");
 				dispatcher.forward(request, response);
 			}
-			
+		}
+		private void registrar_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
+			if(request.getParameter("username").equals("") || request.getParameter("password").equals("") ||	!ventasDAO.ValidacionAlfanumerico(request.getParameter("username")) || !ventasDAO.ValidacionAlfanumerico(request.getParameter("password"))) {	
+				System.out.println("Error en el formulario");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/usuarios/registrar_usuario.jsp");
+				dispatcher.forward(request, response);
+			}else {	
+			Usuario usuario = new Usuario(0,request.getParameter("username"),request.getParameter("password"));
+			ventasDAO.insertar_usuario(usuario);			
+			index(request, response);		
+			}	
 		}
 		private void registrar_categoria(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 			Categoria categoria = new Categoria(0,request.getParameter("nombre"));
-			ventasDAO.insertar_categoria(categoria);
-			
+			ventasDAO.insertar_categoria(categoria);			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/menu_categorias.jsp");
 			dispatcher.forward(request, response);
 		}
@@ -271,7 +291,9 @@ public class AdminController extends HttpServlet{
 				RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/clientes/editar_cliente.jsp");
 				dispatcher.forward(request, response);
 			}else {		
+				System.out.println("in");
 				Cliente cliente = new Cliente(Integer.parseInt(request.getParameter("id")), request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("genero"),request.getParameter("categoria"),request.getParameter("correo"));
+				System.out.println("admin cliente" + cliente.toString());
 				ventasDAO.actualizar_cliente(cliente);
 				mostrar_clientes(request, response);
 			}
@@ -290,6 +312,7 @@ public class AdminController extends HttpServlet{
 		}
 		private void eliminar_cliente(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
 			Cliente cliente = ventasDAO.obtenerPorId_cliente(Integer.parseInt(request.getParameter("id")));
+			System.out.println(cliente.toString());
 			ventasDAO.eliminar_cliente(cliente);
 			mostrar_clientes(request, response);
 			

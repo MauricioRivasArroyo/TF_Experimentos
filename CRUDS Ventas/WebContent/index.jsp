@@ -23,6 +23,12 @@
 	</div>
 		<input class="btn btn-danger btn-block" type="submit" name="login" value="Ingresar">
 </form>
+<br>
+<table align="center" class="table">
+		<tr>
+			<td align="center"><a href="adminController?action=nuevo_usuario">Registrarse</a></td>			
+		</tr>
+	</table>
 </div>
 </body>
 </html>

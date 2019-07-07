@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import dao.ProductoDAO;
 import model.Categoria;
 import model.Producto;
-import model.ProductoResponse;
 
 @WebServlet("/adminProducto")
 public class AdminProducto extends HttpServlet {
