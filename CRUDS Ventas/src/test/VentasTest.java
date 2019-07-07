@@ -39,6 +39,6 @@ public class VentasTest {
 		    driver.findElement(By.name("contraseña")).sendKeys("pass1");     
 		    driver.findElement(By.name("login")).click();
 
-	    assertTrue(driver.getTitle().endsWith("Principal"));
+	    assertTrue(driver.getTitle().endsWith(".:: VISOR ::."));
 	}
 }
