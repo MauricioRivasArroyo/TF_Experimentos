@@ -7,21 +7,35 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
- 
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import com.google.gson.Gson;
+
 import model.Cliente;
 import model.Conexion;
 
 public class ClienteDAO {
 	private Conexion con ;
 	private Connection connection;
+	private Client client;
+	private WebTarget target;
  
 	public ClienteDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) throws SQLException {
-	Conexion.setJdbcURL(jdbcURL);
-	Conexion.setJdbcUsername(jdbcUsername);
-	Conexion.setJdbcPassword(jdbcPassword);	 
-     con = Conexion.getSubFactory(Conexion.MySql);
+		Conexion.setJdbcURL(jdbcURL);
+		Conexion.setJdbcUsername(jdbcUsername);
+		Conexion.setJdbcPassword(jdbcPassword);	 
+		con = Conexion.getSubFactory(Conexion.MySql);
 		
+		client = ClientBuilder.newClient();
 	}
+	
 	public boolean ValidacionNumeros(String cad) {
 		int num;
 		try {
@@ -79,33 +93,25 @@ public class ClienteDAO {
 		}
 	}
  
-	public boolean insertar(Cliente cliente) throws SQLException {		
+	public boolean insertar(Cliente cliente) throws SQLException {
 		boolean registrar = false;
-		if (cliente == null) { 
-			return registrar;
-		}else {
-		if((cliente.getCedula().equals("") || cliente.getNombre().equals("") || cliente.getApellido().equals("") || cliente.getGenero().equals(""))  || 
-				(ValidacionLetras(cliente.getNombre())== false || ValidacionLetras(cliente.getApellido())== false)) {	
-			return registrar;
-				}else {
-		
-		String sql = "INSERT INTO cliente values (NULL,'"+cliente.getCedula()+"','"+cliente.getNombre()+"','"+cliente.getApellido()+"','"+cliente.getGenero()+"','"+cliente.getCategoria()+"','"+cliente.getCorreo()+"')";
-		try {
-			con.conectar();
-			connection = con.getJdbcConnection();
-			Statement stm= connection.createStatement();
-			stm.execute(sql);
-			stm.close();
-			connection.close();			
-			registrar=true;
-			} catch (SQLException e) {
-				System.out.println("Error: método registrar");
-				e.printStackTrace();
+		if (cliente != null) { 
+			if(!((cliente.getCedula().equals("") || cliente.getNombre().equals("") || cliente.getApellido().equals("") || cliente.getGenero().equals(""))  || 
+					(ValidacionLetras(cliente.getNombre())== false || ValidacionLetras(cliente.getApellido())== false))) {	
+				target = client.target("http://ventas-crud-services.herokuapp.com/AniadirCliente?nombre=" + cliente.getNombre() +
+																								"&cedula=" + cliente.getCedula() +
+																								"&apellido=" + cliente.getApellido() + 
+																								"&genero=" + cliente.getGenero() + 
+																								"&categoria=" + cliente.getCategoria() +
+																								"&correo=" + cliente.getCorreo());
+				
+				Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.entity(new String(), MediaType.APPLICATION_JSON));
+				registrar = true;
 			}
+		}
 		return registrar;
-		}
-		}
 	}
+	
 	public Cliente insertar2(Cliente cliente) throws SQLException {		
 		
 		String sql = "INSERT INTO cliente values (NULL,'"+cliente.getCedula()+"','"+cliente.getNombre()+"','"+cliente.getApellido()+"','"+cliente.getGenero()+"','"+cliente.getCategoria()+"','"+cliente.getCorreo()+"')";
@@ -116,55 +122,31 @@ public class ClienteDAO {
 			stm.execute(sql);
 			stm.close();
 			connection.close();			
-			} catch (SQLException e) {
+		}catch (SQLException e) {
 				System.out.println("Error: método registrar");
 				e.printStackTrace();
-			}
-		return cliente;
 		}
+		return cliente;
+	}
 		
 	
 	public List<Cliente> listarClientes() throws SQLException {
- 
 		List<Cliente> listaCliente = new ArrayList<Cliente>();
-		String sql = "SELECT * FROM cliente";
-		con.conectar();
-		connection = con.getJdbcConnection();
-		Statement statement = connection.createStatement();
-		ResultSet resulSet = statement.executeQuery(sql);
- 
-		while (resulSet.next()) {
-			int id = resulSet.getInt("id");
-			String cedula = resulSet.getString("cedula");
-			String nombre = resulSet.getString("nombre");
-			String apellido = resulSet.getString("apellido");
-			String genero = resulSet.getString("genero");
-			String categoria = resulSet.getString("categoria_cliente");
-			String correo = resulSet.getString("correo");
-			Cliente cliente = new Cliente(id, cedula, nombre, apellido,genero,categoria,correo);
-			listaCliente.add(cliente);
-		}
-		con.desconectar();
+		target = client.target("http://ventas-crud-services.herokuapp.com/ListarClientes");
+		String response = target.request(MediaType.APPLICATION_JSON).get(String.class);
+		
+		Gson gson = new Gson();
+		listaCliente = gson.fromJson(response, new GenericType<List<Cliente>>(){}.getType());
 		return listaCliente;
 	}
  
 	public Cliente obtenerPorId(int id) throws SQLException {
 		Cliente cliente = null;
- 
-		String sql = "SELECT * FROM cliente WHERE id= ? ";
-		con.conectar();
-		connection = con.getJdbcConnection();
-		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, id);
- 
-		ResultSet res = statement.executeQuery();
-		if (res.next()) {
-			cliente = new Cliente(res.getInt("id"), res.getString("cedula"), res.getString("nombre"),
-					res.getString("apellido"),res.getString("genero"),res.getString("categoria_cliente"),res.getString("correo"));
-		}
-		res.close();
-		con.desconectar();
- 
+		target = client.target("http://ventas-crud-services.herokuapp.com/ObtenerCliente?id=" + id);
+		String response = target.request(MediaType.APPLICATION_JSON).get(String.class);
+		
+		Gson gson = new Gson();
+		cliente = gson.fromJson(response, Cliente.class); 
 		return cliente;
 	}
 	public Cliente obtenerPorCedula(String cedula) throws SQLException {
@@ -186,42 +168,34 @@ public class ClienteDAO {
 	}
 	public boolean actualizar(Cliente cliente) throws SQLException {
 		boolean rowActualizar = false;
-		Cliente clienteBD = obtenerPorCedula(cliente.getCedula());
-		if((clienteBD.getCedula().equals(cliente.getCedula()) && clienteBD.getNombre().equals(cliente.getNombre()) 
-				&& clienteBD.getApellido().equals(cliente.getApellido()) && clienteBD.getCorreo().equals(cliente.getCorreo()) 
-				&& clienteBD.getGenero().equals(cliente.getGenero()) && clienteBD.getCategoria().equals(cliente.getCategoria())
-				)|| ValidacionLetras(cliente.getNombre()) == false) {
-			return true;
-		}else {
-		String sql = "UPDATE cliente SET nombre=?,apellido=?,genero=?,categoria_cliente=?,correo=? WHERE cedula=?";
-		con.conectar();
-		connection = con.getJdbcConnection();
-		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setString(1, cliente.getNombre());
-		statement.setString(2, cliente.getApellido());
-		statement.setString(3, cliente.getGenero());
-		statement.setString(4, cliente.getCategoria());
-		statement.setString(5, cliente.getCorreo());
-		statement.setString(6, cliente.getCedula()); 
-		rowActualizar = statement.executeUpdate() > 0;
-		statement.close();
-		con.desconectar();
-		return rowActualizar;
+		Cliente clienteDB = obtenerPorId(cliente.getId());
+		if(!((cliente.getCedula().equals("") || cliente.getNombre().equals("") || cliente.getApellido().equals("") || cliente.getGenero().equals(""))  || 
+				(ValidacionLetras(cliente.getNombre())== false || ValidacionLetras(cliente.getApellido())== false))) {
+			target = client.target("http://ventas-crud-services.herokuapp.com/ActualizarCliente?id=" + cliente.getId() +
+																								"&nombre=" + cliente.getNombre() +
+																								"&cedula=" + cliente.getCedula() +
+																								"&apellido=" + cliente.getApellido() + 
+																								"&genero=" + cliente.getGenero() + 
+																								"&categoria=" + cliente.getCategoria() +
+																								"&correo=" + cliente.getCorreo());
+			Response response = target.request(MediaType.APPLICATION_JSON).put(Entity.entity(new String(), MediaType.APPLICATION_JSON));
+			
+			clienteDB = obtenerPorId(clienteDB.getId());
+			if (clienteDB.getNombre().equals(cliente.getNombre())) {
+				rowActualizar = true;
+			}
 		}
+		return rowActualizar;
 	}
 	
 	public boolean eliminar(Cliente cliente) throws SQLException {
 		boolean rowEliminar = false;
-		String sql = "DELETE FROM cliente WHERE ID=?";
-		con.conectar();
-		connection = con.getJdbcConnection();
-		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, cliente.getId());
- 
-		rowEliminar = statement.executeUpdate() > 0;
-		statement.close();
-		con.desconectar();
- 
+		String id = Integer.toString(cliente.getId());
+		target = client.target("http://ventas-crud-services.herokuapp.com/BorrarCliente?id=" + id);
+		String response = target.request().delete(String.class);
+		if (!response.isEmpty()) {
+			rowEliminar = true;			
+		}
 		return rowEliminar;
 	}
 	public boolean eliminarPorCedula(Cliente cliente) throws SQLException {

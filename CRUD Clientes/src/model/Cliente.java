@@ -9,9 +9,9 @@ public class Cliente {
 	private String genero;
 	private String categoria;
 	private String correo;
-
 	
 	public Cliente() {
+		
 	}
 	
 	public Cliente(int id,String cedula, String nombre, String apellido,String genero,String categoria,String correo) {
@@ -22,11 +22,7 @@ public class Cliente {
 		this.genero = genero;
 		this.categoria = categoria;
 		this.correo = correo;
-
-
 	}
-	
-	
 	
 	public int getId() {
 		return id;
