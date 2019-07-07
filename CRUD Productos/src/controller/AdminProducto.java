@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.ProductoDAO;
 import model.Categoria;
 import model.Producto;
+import model.ProductoResponse;
 
 @WebServlet("/adminProducto")
 public class AdminProducto extends HttpServlet {
@@ -53,7 +54,6 @@ public class AdminProducto extends HttpServlet {
 				nuevo(request, response);
 				break;
 			case "register":
-				System.out.println("entro");
 				registrar(request, response);
 				break;
 			case "mostrar":
@@ -74,8 +74,6 @@ public class AdminProducto extends HttpServlet {
 		} catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
-		
 	}
  
 	

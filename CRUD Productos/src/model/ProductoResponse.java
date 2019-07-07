@@ -1,20 +1,27 @@
 package model;
- 
 
-public class Cliente {
-	private int id;	
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+public class ProductoResponse {
+	private int id;
 	private String cedula;
 	private String nombre;
 	private String apellido;
 	private String genero;
 	private String categoria;
 	private String correo;
+
 	
-	public Cliente() {
-		
+	public ProductoResponse() {
 	}
-	
-	public Cliente(int id,String cedula, String nombre, String apellido,String genero,String categoria,String correo) {
+
+	public ProductoResponse(int id, String cedula, String nombre, String apellido, String genero, String categoria,
+			String correo) {
+		super();
 		this.id = id;
 		this.cedula = cedula;
 		this.nombre = nombre;
@@ -23,7 +30,7 @@ public class Cliente {
 		this.categoria = categoria;
 		this.correo = correo;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -78,10 +85,15 @@ public class Cliente {
 
 	public void setCorreo(String correo) {
 		this.correo = correo;
-	}	
-	
-	public String toString() {
-		return "" + this.id + this.cedula + this.nombre + this.apellido + this.genero + this.categoria + this.correo;
 	}
 	
+	public String toString() {
+		return this.getId() + " " + 
+				this.getCedula() + " " + 
+				this.getNombre() + " " + 
+				this.getApellido() + " " + 
+				this.getGenero() + " " + 
+				this.getCategoria() + " " + 
+				this.getCorreo();
+	}
 }

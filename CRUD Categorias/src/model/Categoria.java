@@ -4,7 +4,7 @@ public class Categoria {
 	private int id;	
 	private String nombre;
 	
-	protected Categoria() {
+	public Categoria() {
 	}
 	
 	public Categoria(int id,String nombre) {

@@ -54,7 +54,6 @@ public class AdminCliente extends HttpServlet {
 				nuevo(request, response);
 				break;
 			case "register":
-				System.out.println("entro");
 				registrar(request, response);
 				break;
 			case "mostrar":
@@ -148,7 +147,9 @@ public class AdminCliente extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/vistas/editar.jsp");
 			dispatcher.forward(request, response);
 		}else {		
+			System.out.println("in");
 			Cliente cliente = new Cliente(Integer.parseInt(request.getParameter("id")), request.getParameter("cedula"), request.getParameter("nombre"), request.getParameter("apellido"),request.getParameter("genero"),request.getParameter("categoria"),request.getParameter("correo"));
+			System.out.println("admin cliente" + cliente.toString());
 			clienteDAO.actualizar(cliente);
 			RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 			dispatcher.forward(request, response);
@@ -159,6 +160,7 @@ public class AdminCliente extends HttpServlet {
 	
 	private void eliminar(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException{
 		Cliente cliente = clienteDAO.obtenerPorId(Integer.parseInt(request.getParameter("id")));
+		System.out.println(cliente.toString());
 		clienteDAO.eliminar(cliente);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
 		dispatcher.forward(request, response);
