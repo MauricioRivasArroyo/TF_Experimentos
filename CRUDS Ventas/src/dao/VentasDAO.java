@@ -30,8 +30,7 @@ public class VentasDAO {
 	private Client client;
 	private WebTarget target;
 
-	public VentasDAO(String jdbcURL, String jdbcUsername, String jdbcPassword) throws SQLException {
-		con = new Conexion(jdbcURL, jdbcUsername, jdbcPassword);
+	public VentasDAO() throws SQLException {
 		client = ClientBuilder.newClient();
 
 	}	

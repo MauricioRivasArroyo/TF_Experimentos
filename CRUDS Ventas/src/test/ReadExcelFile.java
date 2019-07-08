@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.*;
 
 public class ReadExcelFile {
@@ -42,9 +43,12 @@ public class ReadExcelFile {
 		
 		XSSFRow row = newSheet.getRow(rowNumber);
 		
-		XSSFCell cell = row.getCell(cellNumber);
+		XSSFCell cell = row.getCell(cellNumber);	
 		
+		System.out.println(cell.getCellType());	
+			
 		return cell.getStringCellValue();
 	}
+	
 }
 

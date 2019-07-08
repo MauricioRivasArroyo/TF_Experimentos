@@ -27,10 +27,10 @@
 	</table>
 	<table align="center" class="table">
 		<tr>
-			<td align="center"><a href="adminController?action=nuevo_cliente">Nuevo</a></td>			
+			<td align="center"><a name="NuevoCliente" href="adminController?action=nuevo_cliente">Nuevo</a></td>			
 		</tr>
 		<tr>
-			<td align="center"><a href="adminController?action=mostrar_clientes">Mostrar</a></td>
+			<td align="center"><a name="MostrarClientes" href="adminController?action=mostrar_clientes">Mostrar</a></td>
 		</tr>
 	</table>
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

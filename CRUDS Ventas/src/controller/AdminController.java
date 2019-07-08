@@ -28,7 +28,7 @@ public class AdminController extends HttpServlet{
 		String jdbcPassword = getServletContext().getInitParameter("jdbcPassword");
 		try {
  
-			ventasDAO = new VentasDAO(jdbcURL, jdbcUsername, jdbcPassword);
+			ventasDAO = new VentasDAO();
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -201,7 +201,7 @@ public class AdminController extends HttpServlet{
 				dispatcher.forward(request, response);
 				
 			}
-			else if(!ventasDAO.ValidacionLetras(request.getParameter("nombre")) || !ventasDAO.ValidacionLetras(request.getParameter("apellido"))){
+			else if(!ventasDAO.ValidacionAlfanumerico(request.getParameter("cedula"))|| !ventasDAO.ValidacionLetras(request.getParameter("nombre")) || !ventasDAO.ValidacionLetras(request.getParameter("apellido"))){
 				System.out.println("Error en el formulario");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/clientes/registrar_cliente.jsp");
 				dispatcher.forward(request, response);

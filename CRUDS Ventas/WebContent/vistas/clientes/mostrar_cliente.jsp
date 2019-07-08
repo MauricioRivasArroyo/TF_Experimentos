@@ -31,7 +31,7 @@
 		</thead>
 		<tbody>
 		<c:forEach var="cliente" items="${lista_clientes}">
-			<tr>
+			<tr name="${cliente.cedula}">
 				<td><c:out value="${cliente.id}"/></td>
 				<td><c:out value="${cliente.cedula}"/></td>
 				<td><c:out value="${cliente.nombre}"/></td>
@@ -39,8 +39,8 @@
 				<td><c:out value="${cliente.genero}"/></td>
 				<td><c:out value="${cliente.categoria}"/></td>
 				<td><c:out value="${cliente.correo}"/></td>
-				<td><a type="button" class="btn btn-secondary" href="adminController?action=showedit_cliente&id=<c:out value="${cliente.id}" />">Editar</a>
-				<a type="button" class="btn btn-secondary" href="adminController?action=eliminar_cliente&id=<c:out value="${cliente.id}" />">Eliminar</a> </td>				
+				<td><a type="button" id="${cliente.cedula}"class="btn btn-secondary" href="adminController?action=showedit_cliente&id=<c:out value="${cliente.id}" />">Editar</a>
+				<a type="button" id="${cliente.nombre}" class="btn btn-secondary" href="adminController?action=eliminar_cliente&id=<c:out value="${cliente.id}" />">Eliminar</a> </td>				
 			</tr>
 		</c:forEach>
 		</tbody>

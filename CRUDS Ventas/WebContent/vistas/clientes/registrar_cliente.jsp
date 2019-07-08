@@ -35,7 +35,7 @@
 		</tr>
 		<tr>
 			<th scope="row"><a>Categoria:</a></th>		
-			<td><input type="checkbox" name="categoria" value="premium"/>Premium
+			<td><input type="checkbox" name="categoria" id="p" value="premium"/>Premium
 			<input type="hidden" name="categoria" value="normal" />
 			</td>	
 		</tr>				
@@ -47,7 +47,7 @@
 	<br>
 	<table border="0" align="center">
 		<tr>
-		<td><button type="submit" name="registrar" class="btn btn-secondary">Agregar</button></td>	
+		<td><button type="submit" name="registrarCliente" class="btn btn-secondary">Agregar</button></td>	
 		</tr>
 		</table>
 	</form>

@@ -22,13 +22,13 @@
 <h2>CRUDS</h2><br>
 	<table align="center" class="table">
 		<tr>
-			<td align="center"><a href="adminController?action=menu_clientes">CRUD Clientes</a></td>			
+			<td align="center"><a name="btnCrudClientes" href="adminController?action=menu_clientes">CRUD Clientes</a></td>			
 		</tr>
 		<tr>
-			<td align="center"><a href="adminController?action=menu_productos">CRUD Productos</a></td>
+			<td align="center"><a name="btnCrudProductos" href="adminController?action=menu_productos">CRUD Productos</a></td>
 		</tr>
 		<tr>
-			<td align="center"><a href="adminController?action=menu_categorias">CRUD Categorias</a></td>
+			<td align="center"><a name="btnCrudCategorias" href="adminController?action=menu_categorias">CRUD Categorias</a></td>
 		</tr>
 	</table>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

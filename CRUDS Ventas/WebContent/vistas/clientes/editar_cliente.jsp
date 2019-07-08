@@ -35,8 +35,8 @@
 			</tr>
 			<tr>
 				<th scope="row"><label>Genero</label></th>
-				<td><input type="radio" name="genero" value="masculino"/>M
-				<input type="radio" name="genero" value="femenino"/>F</td>
+				<td><input type="radio" id="m" name="genero" value="masculino"/>M
+				<input type="radio" id="f" name="genero" value="femenino"/>F</td>
 			</tr>
 			<tr>
 				<th scope="row"><label>Categoria</label></th>
@@ -52,7 +52,7 @@
 	
 		<table border="0" align="center">
 		<tr>
-		<td><button type="submit" class="btn btn-secondary">Guardar</button></td>	
+		<td><button type="submit"  name="GuardarCliente" class="btn btn-secondary">Guardar</button></td>	
 		</tr>
 		</table>	</form>
 
