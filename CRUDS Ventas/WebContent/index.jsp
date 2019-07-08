@@ -26,7 +26,7 @@
 <br>
 <table align="center" class="table">
 		<tr>
-			<td align="center"><a href="adminController?action=nuevo_usuario">Registrarse</a></td>			
+			<td align="center"><a  name="registrarse" href="adminController?action=nuevo_usuario">Registrarse</a></td>			
 		</tr>
 	</table>
 </div>

@@ -34,7 +34,7 @@ public class VentasDAO {
 		con = new Conexion(jdbcURL, jdbcUsername, jdbcPassword);
 		client = ClientBuilder.newClient();
 
-	}
+	}	
 	public boolean ValidacionNumeros(String cad) {
 		int num;
 		try {
@@ -85,7 +85,7 @@ public class VentasDAO {
 		}
 	}
 	public boolean ValidacionLimite(String cad, int min, int max){
-		if(cad.length()-1 > min && cad.length()-1 < max ) {
+		if(cad.length()-1 >= min && cad.length()-1 <= max ) {
 			return true;
 		}else {
 			return false;

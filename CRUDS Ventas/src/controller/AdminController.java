@@ -213,7 +213,8 @@ public class AdminController extends HttpServlet{
 			}
 		}
 		private void registrar_usuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-			if(request.getParameter("username").equals("") || request.getParameter("password").equals("") ||	!ventasDAO.ValidacionAlfanumerico(request.getParameter("username")) || !ventasDAO.ValidacionAlfanumerico(request.getParameter("password"))) {	
+			if(request.getParameter("username").equals("") || request.getParameter("password").equals("") ||	!ventasDAO.ValidacionAlfanumerico(request.getParameter("username")) || !ventasDAO.ValidacionAlfanumerico(request.getParameter("password")) 
+					|| !ventasDAO.ValidacionLimite(request.getParameter("username"), 8, 10) || !ventasDAO.ValidacionLimite(request.getParameter("password"), 8, 10)) {	
 				System.out.println("Error en el formulario");
 				RequestDispatcher dispatcher = request.getRequestDispatcher("vistas/usuarios/registrar_usuario.jsp");
 				dispatcher.forward(request, response);
